@@ -14,6 +14,14 @@ Parameters:
     Type: String
     Default: CmderChris/website
     Description: GitHub repository (owner/name) allowed to deploy.
+  GitHubOwnerId:
+    Type: String
+    Default: '45408229'
+    Description: Numeric GitHub ID of the repo owner (https://api.github.com/users/<owner>, field id).
+  GitHubRepoId:
+    Type: String
+    Default: '1407920155'
+    Description: Numeric GitHub ID of the repo (https://api.github.com/repos/<owner>/<name>, field id).
   GitHubBranch:
     Type: String
     Default: main
@@ -184,7 +192,22 @@ Resources:
             Condition:
               StringEquals:
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
-                token.actions.githubusercontent.com:sub: !Sub 'repo:${GitHubRepo}:ref:refs/heads/${GitHubBranch}'
+                # GitHub issues one of two subject formats depending on when the repo was created
+                # (name-based, or immutable-ID-based); allow either.
+                token.actions.githubusercontent.com:sub:
+                  - !Sub 'repo:${GitHubRepo}:ref:refs/heads/${GitHubBranch}'
+                  - !Join
+                    - ''
+                    - - 'repo:'
+                      - !Select [0, !Split ['/', !Ref GitHubRepo]]
+                      - '@'
+                      - !Ref GitHubOwnerId
+                      - '/'
+                      - !Select [1, !Split ['/', !Ref GitHubRepo]]
+                      - '@'
+                      - !Ref GitHubRepoId
+                      - ':ref:refs/heads/'
+                      - !Ref GitHubBranch
       Policies:
         - PolicyName: deploy-site
           PolicyDocument:
