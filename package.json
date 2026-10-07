@@ -1,0 +1,20 @@
+{
+  "name": "website-root",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "prepare": "npm run build:lib",
+    "build:lib": "npm run build:lib -w pip-walk",
+    "dev": "npm run dev -w website",
+    "dev:pip-walk": "npm run dev -w pip-walk",
+    "build": "npm run build:lib && npm run build -w website",
+    "lint": "npm run lint --workspaces --if-present",
+    "preview": "npm run preview -w website",
+    "sync:pull": "git subtree pull --prefix=packages/pip-walk pip-walk main",
+    "sync:push": "git subtree push --prefix=packages/pip-walk pip-walk main"
+  }
+}

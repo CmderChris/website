@@ -11,7 +11,12 @@
   },
   "dependencies": {
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "pip-walk": "*",
+    "three": "^0.183.2",
+    "@react-three/fiber": "^9.6.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/postprocessing": "^3.0.4"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",
@@ -20,6 +25,8 @@
     "@vitejs/plugin-react": "^6.1.1",
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "vite-plugin-static-copy": "latest",
+    "@types/three": "^0.183.1"
   }
 }
